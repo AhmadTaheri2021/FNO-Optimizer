@@ -45,17 +45,12 @@ A unique **Dynamic Focus Strategy (DFS)** is introduced to balance exploration a
     FNO_Main
 
 ### 📦 Directory Structure
-FNO_Main.m: Entry point for running FNO.
 
-FNO_Functions/: Core logic for FNO and its components.
+   FNO_Main.m: Entry point for running FNO.
 
-Benchmarks/: CEC2005, CEC2014, CEC2019 test functions.
+   Benchmarks/: CEC2005, CEC2014, CEC2019 test functions.
 
-Engineering/: Real-world problem cases.
 
-Results/: Output folder (optional).
-
-Examples/: Sample configurations and visualizations.
 
 ### 📑 Citation
 If you use this algorithm in your work, please cite:
