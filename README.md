@@ -32,7 +32,7 @@ A unique **Dynamic Focus Strategy (DFS)** is introduced to balance exploration a
 
 1. Clone the repository:
    
-   git clone https://github.com/YOUR_USERNAME/FNO-Optimizer.git
+   git clone https://github.com/AhmadTaheri2021/FNO-Optimizer.git
 
    cd FNO-Optimizer
 
