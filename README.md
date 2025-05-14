@@ -10,7 +10,7 @@ _Ahmad Taheri, Keyvan RahimiZadeh, Jan Baumbach, Amin Beheshti, Olga Zolotareva,
 
 ---
 
-## 🧠 Overview
+## Overview
 
 The **FNO algorithm** is a novel metaheuristic approach based on two key behaviors:
 
@@ -21,7 +21,7 @@ A unique **Dynamic Focus Strategy (DFS)** is introduced to balance exploration a
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Requirements
 
@@ -44,7 +44,7 @@ A unique **Dynamic Focus Strategy (DFS)** is introduced to balance exploration a
 
     FNO_Main
 
-### 📦 Directory Structure
+### Directory Structure
 
    FNO_Main.m: Entry point for running FNO.
 
@@ -52,12 +52,15 @@ A unique **Dynamic Focus Strategy (DFS)** is introduced to balance exploration a
 
 
 
-### 📑 Citation
+### Citation
 If you use this algorithm in your work, please cite:
 
-### 📄 License
+### License
 Distributed under the MIT License. See LICENSE for more information.
 
-### 📬 Contact
+### Contact
 For questions or collaboration, feel free to reach out to the authors or open an issue.
-
+‘’’
+Ahmad.thr@gmail.com
+Ahmad.Taheri@uni-hamburg.de
+‘’’
