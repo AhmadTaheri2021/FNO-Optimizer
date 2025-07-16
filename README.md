@@ -1,7 +1,7 @@
 # FNO-Optimizer
 Official implementation of the Farthest Better or Nearest Worse Optimizer (FNO) algorithm, a novel metaheuristic optimization method designed for solving complex, constrained, and unconstrained problems.
 
-# FNO - Farthest Better or Nearest Worse Optimizer (MATLAB)
+# FNO - Farthest Better or Nearest Worse Optimizer
 
 This is the official MATLAB implementation of the FNO algorithm presented in the paper:
 
