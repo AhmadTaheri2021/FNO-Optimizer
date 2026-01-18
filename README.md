@@ -54,6 +54,12 @@ A unique **Dynamic Focus Strategy (DFS)** is introduced to balance exploration a
 
 ### Citation
 If you use this algorithm in your work, please cite:
+@article{taheri2025farthest,
+  title={Farthest better or nearest worse optimizer: a novel metaheuristic algorithm},
+  author={Taheri, Ahmad and RahimiZadeh, Keyvan and Baumbach, Jan and Beheshti, Amin and Zolotareva, Olga and Al-Betar, Mohammed Azmi and Mirjalili, Seyedali and Gandomi, Amir H},
+  year={2025},
+  publisher={Springer}
+}
 
 ### License
 Distributed under the MIT License. See LICENSE for more information.
