@@ -1,6 +1,39 @@
 # Farthest Better or Nearest Worse Optimizer (FNO)
 
-Official MATLAB implementation of FNO for minimizing a scalar objective within box bounds. Each agent uses distances to higher- and lower-ranked agents to propose a move. The dynamic focus strategy narrows the search around the farthest better agent as the evaluation budget is consumed. [Read the paper in *Artificial Intelligence Review*](https://doi.org/10.1007/s10462-025-11443-z).
+FNO is a population-based optimizer for bounded minimization. Each agent uses two neighbors to propose its next move. The nearest worse agent helps it step away from a poorer region. The farthest better agent gives it a promising region to explore. An agent accepts a move only when its objective value improves. [Paper in *Artificial Intelligence Review*](https://doi.org/10.1007/s10462-025-11443-z)
+
+## Two-dimensional test functions
+
+![Contour maps of Sphere, Rosenbrock and Rastrigin, with a star at each global minimum.](docs/figures/benchmarks-2d.png)
+
+Each panel shows objective values on the search domain used in the example. Darker regions have lower cost. The orange star marks the global minimum, where the cost is zero.
+
+| Function | Objective | Minimizer | Landscape |
+| --- | --- | --- | --- |
+| Sphere | $x_1^2+x_2^2$ | $(0,0)$ | A smooth bowl with circular contours |
+| Rosenbrock | $(1-x_1)^2+100(x_2-x_1^2)^2$ | $(1,1)$ | A narrow, curved valley |
+| Rastrigin | $20+\sum_{j=1}^2[x_j^2-10\cos(2\pi x_j)]$ | $(0,0)$ | A grid of local minima around the global minimum |
+
+Run all three from the repository root in MATLAB. Each run uses 30 agents and 3,000 objective evaluations.
+
+```matlab
+run('examples/benchmarks_2d.m')
+```
+
+## Dynamic Focus Strategy (DFS)
+
+Let $p$ be the fraction of the evaluation budget used. With probability $p$, FNO takes a focus step from the temporary position $t$ toward the farthest better position $b$. For each coordinate $j$, the proposal is
+
+$$
+x_j^{\mathrm{trial}} = t_j + W d_j (b_j-t_j), \qquad
+d_j = \left|\mu + (2u_j-1)\sqrt{1-p}\right|.
+$$
+
+The coordinates share a uniform draw $\mu$ and a step weight $W$, while each $u_j$ is drawn independently and uniformly from $[0,1]$. Early in the run, the coordinate multipliers can differ substantially, spreading proposals to either side of the line through $t$ and $b$. As the budget runs down, the multipliers approach the shared value $\mu$, concentrating proposals near that line. A large step can carry the agent beyond $b$.
+
+![Samples of two-dimensional focus proposals at 10, 75 and 99 percent of the evaluation budget, shown on identical axes.](docs/figures/dynamic-focus.png)
+
+The circle marks $t=(0,0)$ and the star marks $b=(1,1)$. Each panel shows 700 possible focus proposals with the same random draws. Fixing $W=2$ and $\mu=0.5$ isolates the effect of the shrinking focus width. With these settings the proposals converge on the star as $p$ approaches one.
 
 ## Quick start
 
@@ -36,19 +69,15 @@ The same optimization is available as a runnable [demo](examples/sphere_demo.m).
 - `bestPosition` is a row vector. The column vector `history` records the incumbent after every evaluation, including initialization.
 - To start from evaluated solutions, pass a seventh argument containing `popSize` structs with fields `Position` and `Cost`. These costs must use the same objective and count toward the budget.
 
-## Published implementation and CEC2014
+## CEC2014 benchmark
 
-The refactor follows the [released MATLAB implementation](https://github.com/AhmadTaheri2021/FNO-Optimizer/tree/67d87df7574a8860e7a4144e0c9cd925f1b77feb) where its operational details differ from the paper's notation. Each sweep samples a shrinking prefix of the better ranks, finds the farthest agent in that prefix and the nearest agent among worse ranks, then updates individuals sequentially. Ties follow sorted population order. The temporary move is kept with probability `1 - evaluations/maxEvals`. Otherwise, the focus step starts from that temporary position. Out-of-bounds coordinates are resampled uniformly within their own bounds.
+For the 30-dimensional CEC2014 F2 setup, make your CEC2014 MATLAB evaluator (`cec14_func`) and its required benchmark data available, then execute `Run_FNO`. The benchmark data and evaluator are external dependencies. The runner passes column vectors to CEC2014 and reports objective error after subtracting the function bias (`100 * functionID`).
 
-For the original 30-dimensional CEC2014 F2 setup, make your CEC2014 MATLAB evaluator (`cec14_func`) and its required benchmark data available, then execute `Run_FNO`. The benchmark data and evaluator are external dependencies. The runner passes column vectors to CEC2014 and reports objective error after subtracting the function bias (`100 * functionID`).
-
-Existing callers can use the original interface and output order:
+To use a pre-evaluated CEC2014 population, call:
 
 ```matlab
 [history, bestCost] = FNO_final(N, MaxFEs, LB, UB, HM, nPop, functionID);
 ```
-
-Compared with the initial release, the solver honors the caller's RNG, includes all initial evaluations in the budget, starts from the best of the entire population, and stops exactly at the budget even mid-sweep. These corrections change convergence traces. For historical experiments, use the linked release snapshot.
 
 ## Tests
 
@@ -59,7 +88,7 @@ addpath('tests');
 test_fno
 ```
 
-The tests check evaluation counts, incumbent history, repeatability, bounds, pre-evaluated populations, and the original output order.
+The tests check evaluation counts, incumbent history, repeatability, bounds, pre-evaluated populations, and the CEC2014 output order.
 
 ## Citation
 

@@ -53,7 +53,7 @@ evaluations = popSize;
 while evaluations < maxEvals
     [fb, nw] = selectNeighbors(positions, costs, evaluations / maxEvals);
     % Fix neighbor indices for this sweep. Accepted moves are visible to
-    % later individuals, as in the released implementation.
+    % later individuals in the same sweep.
     for i = 1:min(popSize, maxEvals - evaluations)
         trial = propose(positions(i,:), positions(fb(i),:), ...
             positions(nw(i),:), evaluations / maxEvals);
@@ -99,7 +99,7 @@ rank = zeros(n,1);
 rank(order) = 1:n;
 for i = 1:n
     distances = sum((positions - positions(i,:)).^2, 2);
-    % Keep the randomized, shrinking prefix of the best ranks used in v1.
+    % Sample a shrinking prefix of the better-ranked agents.
     count = ceil(max(1, rank(i)-1) * (1 - sqrt(progress)) * rand);
     if count > 0
         better = order(1:count);
