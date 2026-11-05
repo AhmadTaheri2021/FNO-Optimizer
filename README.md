@@ -2,23 +2,16 @@
 
 FNO is a population-based optimizer for bounded minimization. Each agent uses two neighbors to propose its next move. The nearest worse agent helps it step away from a poorer region. The farthest better agent gives it a promising region to explore. An agent accepts a move only when its objective value improves. [Paper in *Artificial Intelligence Review*](https://doi.org/10.1007/s10462-025-11443-z)
 
-## Two-dimensional test functions
+## CEC2014 benchmark landscapes
 
-![Contour maps of Sphere, Rosenbrock and Rastrigin, with a star at each global minimum.](docs/figures/benchmarks-2d.png)
+These three surfaces show how the objective value changes with two decision variables. The CEC2014 IDs are the numbers passed to `cec14_func`. The FNO paper numbers functions across several benchmark suites.
 
-Each panel shows objective values on the search domain used in the example. Darker regions have lower cost. The orange star marks the global minimum, where the cost is zero.
+| CEC2014 F3 · Rotated Discus | CEC2014 F4 · Shifted and Rotated Rosenbrock | CEC2014 F8 · Shifted Rastrigin |
+| :---: | :---: | :---: |
+| ![Rotated Discus surface with a single steep direction](docs/figures/cec14-f03-discus.png) | ![Shifted and rotated Rosenbrock surface with a curved valley](docs/figures/cec14-f04-rosenbrock.png) | ![Shifted Rastrigin surface with regularly spaced local minima](docs/figures/cec14-f08-rastrigin.png) |
+| F08 in the FNO paper · optimum 300 | F09 in the FNO paper · optimum 400 | F13 in the FNO paper · optimum 800 |
 
-| Function | Objective | Minimizer | Landscape |
-| --- | --- | --- | --- |
-| Sphere | $x_1^2+x_2^2$ | $(0,0)$ | A smooth bowl with circular contours |
-| Rosenbrock | $(1-x_1)^2+100(x_2-x_1^2)^2$ | $(1,1)$ | A narrow, curved valley |
-| Rastrigin | $20+\sum_{j=1}^2[x_j^2-10\cos(2\pi x_j)]$ | $(0,0)$ | A grid of local minima around the global minimum |
-
-Run all three from the repository root in MATLAB. Each run uses 30 agents and 3,000 objective evaluations.
-
-```matlab
-run('examples/benchmarks_2d.m')
-```
+The surface plots are Figures 3, 4(a), and 8 in the [CEC2014 benchmark definitions by Liang, Qu, and Suganthan](https://github.com/P-N-Suganthan/CEC2014/blob/master/Definitions%20of%20%20CEC2014%20benchmark%20suite%20Part%20A.pdf). The [MATLAB example](examples/cec14_benchmarks.m) runs FNO on these three functions and reports the objective value minus the known optimum. Add the repository root and its `examples` folder to the MATLAB path, then run `cec14_benchmarks` from the CEC2014 directory containing the evaluator and `input_data/`.
 
 ## Dynamic Focus Strategy (DFS)
 
@@ -31,9 +24,9 @@ $$
 
 The coordinates share a uniform draw $\mu$ and a step weight $W$, while each $u_j$ is drawn independently and uniformly from $[0,1]$. Early in the run, the coordinate multipliers can differ substantially, spreading proposals to either side of the line through $t$ and $b$. As the budget runs down, the multipliers approach the shared value $\mu$, concentrating proposals near that line. A large step can carry the agent beyond $b$.
 
-![Samples of two-dimensional focus proposals at 10, 75 and 99 percent of the evaluation budget, shown on identical axes.](docs/figures/dynamic-focus.png)
+![Figure 8 from the FNO paper shows eight panels of candidate moves as the focus parameter decreases from 1 to 0.01.](docs/figures/fno-figure-8.jpg)
 
-The circle marks $t=(0,0)$ and the star marks $b=(1,1)$. Each panel shows 700 possible focus proposals with the same random draws. Fixing $W=2$ and $\mu=0.5$ isolates the effect of the shrinking focus width. With these settings the proposals converge on the star as $p$ approaches one.
+Figure 8 shows the current position (blue cross), the target (red cross), and possible new positions (asterisks). As the focus width decreases across the panels, the proposals concentrate along the line through the two crosses. Figure reproduced from [Taheri et al., *Artificial Intelligence Review* (2026)](https://doi.org/10.1007/s10462-025-11443-z).
 
 ## Quick start
 
