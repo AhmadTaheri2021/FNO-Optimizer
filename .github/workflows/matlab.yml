@@ -1,0 +1,13 @@
+name: MATLAB tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: matlab-actions/setup-matlab@v2
+      - uses: matlab-actions/run-command@v2
+        with:
+          command: addpath('tests'); test_fno; run('examples/sphere_demo.m')
